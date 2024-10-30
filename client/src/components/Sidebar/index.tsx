@@ -55,7 +55,7 @@ const Sidebar = () => {
 
         <div className='flex items-center gap-5 border-y-[1.5px] border-gray-200 px-8 py-4 dark:border-gray-700'>
 
-          <Image src="/logo.png" alt='Logo' width={40} height={40}/>
+          <Image src="https://pm-s3-yoex-images.s3.us-east-1.amazonaws.com/logo.png" alt='Logo' width={40} height={40}/>
 
 
             {/**El atributo tracking wide es espacio entre letras, hay diferentes, widest, normal, tight etc */}
