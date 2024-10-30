@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { useGetTasksQuery, useUpdateTaskStatusMutation, Task as TaskType} from '@/state/api';
 import { EllipsisVertical, MessageSquareMore, Plus } from 'lucide-react';
 import React from 'react'
