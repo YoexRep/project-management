@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import StoreProvider, { useAppSelector } from './redux';
 
+import AuthProvider from "./authProvider";
+
 /*A este compoenente le pasamos un prop, de react node, ya que es el contendor padre de nuestra app, y es por eso que debe recibir los elementos hijos
     como el sidebar, navbar etc.
 */
@@ -68,8 +70,9 @@ const DasboardWrapper = ({children}: {children: React.ReactNode}) => {
   return (
 
     <StoreProvider>
+      <AuthProvider>
       <DasboardLayout>{children}</DasboardLayout>
-
+      </AuthProvider>
     </StoreProvider>
   )
 }
