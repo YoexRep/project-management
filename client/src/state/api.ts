@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 
 //tipos de datos para nuestros modelos del backend, y poder hacer API CALLAS
 
@@ -89,12 +90,50 @@ export interface SearchResults {
 //Para hacer llamadas API CALLS A Nuestro back usamos este metodo api
 
 export const api = createApi({
-    baseQuery: fetchBaseQuery({baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL}),
+    baseQuery: fetchBaseQuery({baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, 
+
+
+      //API GATEGAY Authorization, para crear sesiones
+      prepareHeaders: async (headers) => {
+        const session = await fetchAuthSession();
+        const { accessToken } = session.tokens ?? {};
+        if (accessToken) {
+          headers.set("Authorization", `Bearer ${accessToken}`);
+        }
+        return headers;
+      },
+
+
+    }),
+
+    
     reducerPath: "api",
     tagTypes: ["Projects", "Tasks", "Users", "Teams"], //Reduxtool guardar nuestros datos, y la manera en que podemos acceder a ellos es a traves de estos tagstypes
 
     //Aqui definimos cada uno de los endpoint que queremos llamar.
     endpoints: (build) => ({
+
+
+        //Creamos este endpoint para obtener los datos desde cognito
+        getAuthUser: build.query({
+            queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
+              try {
+                const user = await getCurrentUser();
+                const session = await fetchAuthSession();
+                if (!session) throw new Error("No session found");
+                const { userSub } = session; //Obtenemos el ID del usuario
+                const { accessToken } = session.tokens ?? {}; //El token para crear la sesion como json web token
+      
+                //Obtenemos la data del usuario en nuestro base de datos
+                const userDetailsResponse = await fetchWithBQ(`users/${userSub}`);
+                const userDetails = userDetailsResponse.data as User;
+      
+                return { data: { user, userSub, userDetails } };
+              } catch (error: any) { 
+                return { error: error.message || "Could not fetch user data" };
+              }
+            },
+          }),
 
         /*Llamamos a nuestro endpoint getprojects, el primer parametro Project[] es nuestro esquema, el segundo es el dato que le enviamos, 
         en este caso void porque no le enviamos nada*/
@@ -188,4 +227,4 @@ export const api = createApi({
 
 
 //Exportarmos las llamadas de nuestro endpoints
-export const {useGetProjectsQuery, useCreateProjectMutation, useGetTasksQuery, useCreateTaskMutation, useUpdateTaskStatusMutation, useSearchQuery, useGetUsersQuery, useGetTeamsQuery, useGetTasksByUserQuery} = api
+export const {useGetProjectsQuery, useCreateProjectMutation, useGetTasksQuery, useCreateTaskMutation, useUpdateTaskStatusMutation, useSearchQuery, useGetUsersQuery, useGetTeamsQuery, useGetTasksByUserQuery, useGetAuthUserQuery} = api

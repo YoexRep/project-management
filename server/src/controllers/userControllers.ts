@@ -38,6 +38,8 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         .json({ message: `Error retrieving user: ${error.message}` });
     }
   };
+
+  
   
   export const postUser = async (req: Request, res: Response) => {
     try {
