@@ -78,12 +78,16 @@ const ReusablePriorityPage  = ({priority}: Props) => {
 
 
     //Como todavia no tenemos userId authethificacion con cognito, simplimente le pasaremos el ID 1
-   // const userId = 1;
+    //const userId = 1;
 
    //Ahora lo obtenemos desde cognito
-    const { data: currentUser } = useGetAuthUserQuery({});
+     const { data: currentUser } = useGetAuthUserQuery({});
 
     const userId = currentUser?.userDetails?.userId ?? null;
+
+
+
+
 
   const {
     data: tasks,

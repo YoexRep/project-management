@@ -53,17 +53,9 @@ const formFields = {
 
 //Usamos el authenticator de AWS para crear nuestro formulario
 
-
 const AuthProvider = ({ children }: any) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh", // Full height of the viewport
-      }}
-    >
+    <div>
       <Authenticator formFields={formFields}>
         {({ user }: any) =>
           user ? (
