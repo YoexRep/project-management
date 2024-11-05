@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 
@@ -122,7 +125,7 @@ export const api = createApi({
                 const session = await fetchAuthSession();
                 if (!session) throw new Error("No session found");
                 const { userSub } = session; //Obtenemos el ID del usuario
-                const { accessToken } = session.tokens ?? {}; //El token para crear la sesion como json web token
+               // const { accessToken } = session.tokens ?? {}; //El token para crear la sesion como json web token
       
                 //Obtenemos la data del usuario en nuestro base de datos
                 const userDetailsResponse = await fetchWithBQ(`users/${userSub}`);
